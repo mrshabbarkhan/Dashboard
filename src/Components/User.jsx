@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const User = () => {
   return (
-    <div className="box bg-black h-screen flex justify-center items-center">
-      <div class=" w-1/3 mx-auto bg-black p-8 rounded-md shadow-md form-container">
+    <div className="box bg-black h-screen flex justify-center items-center w-full">
+      <div class="w-full md:w-1/3 mx-auto bg-black p-8 rounded-md shadow-md form-container">
         <h2 class="text-2xl font-semibold text-white mb-6">Say Something!</h2>
         <form>
           <div class="mb-4">
