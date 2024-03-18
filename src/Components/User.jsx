@@ -59,8 +59,7 @@ const User = () => {
           <p class="mt-2 text-gray-300">If You are a admin login here</p>
           <Link
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            to={"/login"}
-            target="blank">
+            to={"/login"}>
             Login here
           </Link>
         </form>
