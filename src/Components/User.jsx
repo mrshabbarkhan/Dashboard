@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const User = () => {
+  const [formdata, setformdata] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handlechange = (e) => {
+    e.preventDefault();
+    console.log(formdata);
+    setformdata({
+      ...formdata,
+      [e.target.name]: e.target.value,
+    });
+  };
   return (
     <div className="box bg-black h-screen flex justify-center items-center w-full">
       <div class="w-full md:w-1/3 mx-auto bg-black p-8 rounded-md shadow-md form-container">
         <h2 class="text-2xl font-semibold text-white mb-6">Say Something!</h2>
-        <form>
+        <form onSubmit={() => handlechange()}>
           <div class="mb-4">
             <label
               for="name"
@@ -17,6 +31,7 @@ const User = () => {
               type="text"
               id="name"
               name="name"
+              onChange={handlechange}
               placeholder="Shabbar"
               required
               class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 bg-gray-700 text-white"
@@ -32,6 +47,7 @@ const User = () => {
               type="email"
               id="email"
               name="email"
+              onChange={handlechange}
               placeholder="EskillsWeb@gmail.com"
               required
               class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 bg-gray-700 text-white"
@@ -46,6 +62,7 @@ const User = () => {
             <textarea
               id="message"
               name="message"
+              onChange={handlechange}
               rows="4"
               placeholder="How can we help you?"
               required
