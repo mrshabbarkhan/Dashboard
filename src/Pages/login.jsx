@@ -1,7 +1,67 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import GoogleButton from "react-google-button";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../features/Auth/authSlice";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const { users, isSuccess, isLoadings, isError, message } = useSelector(
+    (state) => state.auth2
+  );
+  console.log(isError);
+  const { loginWithRedirect, user, isAuthenticated, isLoading } = useAuth0();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const { email, password } = formData;
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  console.log(formData);
+  const Submit = (e) => {
+    e.preventDefault();
+    if (isError && message) {
+      toast.error("Invalid Credentials");
+    } else {
+      console.log("Login SuccessFully");
+      dispatch(loginUser(formData));
+      setFormData({
+        email: "",
+        password: "",
+      });
+    }
+  };
+  useEffect(() => {
+    if (users || isSuccess) {
+      navigate("/Userdashboard");
+    }
+    if (isError || message) {
+      toast.error(message);
+    }
+  }, [users, isSuccess, isError, message]);
+
+  console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/Userdashboard");
+    }
+    if (isLoading) {
+      <h1>loading.....</h1>;
+    }
+  }, [user, isLoading]);
+
   return (
     <div class="bg-black text-white flex w-full min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
       <a href="#">
@@ -44,7 +104,7 @@ const Login = () => {
                   <div class="group relative rounded-lg border focus-within:border-sky-200 px-3 pb-1.5 pt-2.5 duration-200 focus-within:ring focus-within:ring-sky-300/30">
                     <div class="flex justify-between">
                       <label class="text-xs font-medium text-muted-foreground group-focus-within:text-white text-gray-400">
-                        Username
+                        Email
                       </label>
                       <div class="absolute right-3 translate-y-2 text-green-200">
                         <svg
@@ -62,8 +122,9 @@ const Login = () => {
                     </div>
                     <input
                       type="text"
-                      name="username"
-                      placeholder="Username"
+                      name="email"
+                      value={email}
+                      onChange={handleChange}
                       autocomplete="off"
                       class="block w-full border-0 bg-transparent p-0 text-sm file:my-1 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:font-medium placeholder:text-muted-foreground/90 focus:outline-none focus:ring-0 sm:leading-7 text-foreground"
                     />
@@ -81,6 +142,8 @@ const Login = () => {
                     <div class="flex items-center">
                       <input
                         type="password"
+                        onChange={handleChange}
+                        value={password}
                         name="password"
                         class="block w-full border-0 bg-transparent p-0 text-sm file:my-1 placeholder:text-muted-foreground/90 focus:outline-none focus:ring-0 focus:ring-teal-500 sm:leading-7 text-foreground"
                       />
@@ -104,15 +167,17 @@ const Login = () => {
                 </a>
               </div>
               <div class="mt-4 flex items-center justify-end gap-x-2">
-                <a
+                <GoogleButton onClick={() => loginWithRedirect()} />
+                <Link
                   class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:ring hover:ring-white h-10 px-4 py-2 duration-200"
-                  href="/register">
+                  to={"/register"}>
                   Register
-                </a>
+                </Link>
                 <button
+                  onClick={Submit}
                   class="font-semibold hover:bg-black hover:text-white hover:ring hover:ring-white transition duration-300 inline-flex items-center justify-center rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-black h-10 px-4 py-2"
                   type="submit">
-                  <Link to={"/dashboard"}>Login</Link>
+                  <a>Login</a>
                 </button>
               </div>
             </form>

@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
-  name: "auth",
+  name: "authdata",
   initialState: {
-    isloading: false,
+    isLoading: false,
+    query: [],
     isError: false,
-    isSucces: false,
+    isSuccess: false,
     user: [
       {
         id: 1,
@@ -23,7 +24,43 @@ const authSlice = createSlice({
     message: "",
   },
   reducers: {},
-  extraReducers: () => {},
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(getCreateDocument.pending, (state) => {
+  //       state.isLoading = true;
+  //       state.isSuccess = false;
+  //       state.isError = false;
+  //       state.message = "";
+  //     })
+  //     .addCase(getCreateDocument.fulfilled, (state, action) => {
+  //       state.isLoading = false;
+  //       state.isSuccess = true;
+  //       state.isError = false;
+  //       state.query = action.payload;
+  //       state.message = "";
+  //     })
+  //     .addCase(getCreateDocument.rejected, (state, action) => {
+  //       state.isLoading = false;
+  //       state.isSuccess = false;
+  //       state.isError = true;
+  //       state.message = action.payload;
+  //     });
+  // },
 });
+
+// Create Document
+
+// export const getCreateDocument = createAsyncThunk(
+//   "CREATE/DOCUMENT",
+//   async (formData, thunkAPI) => {
+//     try {
+//       const token = await thunkAPI.getState().auth.user.token;
+//       return await documentService.createDocument(formData, token);
+//     } catch (error) {
+//       const message = error.response.data.message;
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
 
 export default authSlice.reducer;
