@@ -95,6 +95,12 @@ export const logOutUser = createAsyncThunk("AUTH/LOGOUT", async () => {
   localStorage.removeItem("user");
 });
 
+export const logOutAdmin = createAsyncThunk("AUTH/LOGOUT", async () => {
+  localStorage.removeItem("admin");
+});
+export const loginAdmin = createAsyncThunk("AUTH/LOGOUT", async (data) => {
+  localStorage.setItem("admin", JSON.stringify(data));
+});
 // Register User
 
 export const registerUser = createAsyncThunk(

@@ -1,30 +1,27 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import img from "../assets/Avatar.png";
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  getAllDocuments,
-  getDeleteDocument,
-} from "../features/document/documentSlice";
 
-const Users = () => {
+const Allusers = () => {
   const { users } = useSelector((state) => state.auth2);
   const { documents } = useSelector((state) => state.document);
   const { user } = useAuth0();
   const dispatch = useDispatch();
 
-  const remove = (id) => {
-    console.log(id);
-    dispatch(getDeleteDocument(id));
-    window.location.reload();
-  };
-  console.log(documents);
-  useEffect(() => {
-    dispatch(getAllDocuments());
-  }, []);
-  useEffect(() => {
-    dispatch(getAllDocuments());
-  }, [documents]);
+//   const remove = (id) => {
+//     console.log(id);
+//     dispatch(getDeleteDocument(id));
+//     window.location.reload();
+//   };
+//   console.log(documents);
+//   useEffect(() => {
+//     dispatch(getAllDocuments());
+//   }, []);
+//   useEffect(() => {
+//     dispatch(getAllDocuments());
+//   }, [documents]);
+
   return (
     <>
       <div id="last-users">
@@ -99,4 +96,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Allusers;

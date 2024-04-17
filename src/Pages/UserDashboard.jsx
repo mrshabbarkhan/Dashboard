@@ -1,22 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "../Components/Form";
-import img from "../assets/imran.jpg";
+import img from "../assets/Avatar.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "../features/Auth/authSlice";
+import { useEffect } from "react";
+import { json, useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
-  const { user, logout } = useAuth0();
+  const { user, logout, isLoading } = useAuth0();
   const { users, isSuccess, isLoadings, isError, message } = useSelector(
     (state) => state.auth2
   );
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  console.log(user, 14);
+
+  const LogOutUser = () => {
+    dispatch(logOutUser());
+  };
+
+  // set user in Localstorage
+  if (!localStorage.getItem(user)) {
+    user && localStorage.setItem("user", JSON.stringify(user));
+  } else {
+    console.log("not google user");
+  }
+  const AdminExist = JSON.parse(localStorage.getItem("admin"));
+
+  useEffect(() => {
+    if (!users && !user) {
+      navigate("/");
+    }
+    if (AdminExist) {
+      navigate("/dashboard");
+    }
+    if (isLoading || isLoadings) {
+      <h1>Loading......</h1>;
+    }
+  }, [users, user, isLoading, isLoadings, AdminExist]);
+
   return (
     <div className=" bg-black min-h-screen flex items-center justify-start p-4 w-full">
       <div class=" max-w-8xl bg-black text-white">
         <div class="lg:col-start-2 col-span-12 lg:col-span-10 grid grid-cols-6 gap-x-8 gap-y-10 border-b border-gray-900/10 pb-12 mx-auto">
-          <div class="p-4 col-span-6 md:col-span-2 ">
-            <div class="grid grid-cols-5">
+          <div class="p-4 col-span-6 md:col-span-2">
+            <div class="grid grid-cols-5 ">
               <div class="md:col-span-5 group relative flex items-left gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-indigo-50 ">
                 <div
                   // style="text-align: center;"
@@ -203,17 +233,15 @@ const UserDashboard = () => {
                 <div class="flex-auto  hidden md:block">
                   <button
                     onClick={() => {
-                      // logout({
-                      //   logoutParams: { returnTo: window.location.origin },
-                      // }),
-                      dispatch(logOutUser());
+                      logout({
+                        logoutParams: { returnTo: window.location.origin },
+                      }),
+                        LogOutUser();
                     }}>
-                    <a
-                      href=""
-                      class="block font-semibold text-white hover:text-black">
+                    <p class="block font-semibold text-white hover:text-black">
                       Logout
                       <span class="absolute inset-0"></span>
-                    </a>
+                    </p>
                   </button>
                   <p class="mt-1 text-gray-600">Logout From the Application</p>
                 </div>

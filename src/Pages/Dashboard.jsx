@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Users from "../Components/Users";
 
 import {
@@ -13,6 +13,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Aside from "../Components/Aside";
+import Allusers from "../Components/Allusers";
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -96,6 +98,14 @@ const data = [
 ];
 
 const Dashboard = () => {
+  const AdminExist = localStorage.getItem("admin");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!AdminExist) {
+      navigate("/");
+    }
+  }, [AdminExist]);
   return (
     <div class="antialiased bg-black w-full min-h-screen text-slate-300 relative py-4">
       <div class="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
@@ -265,7 +275,8 @@ const Dashboard = () => {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <div id="last-users">
+          <Allusers />
+          {/* <div id="last-users">
             <h1 class="font-bold py-4 mt-10 uppercase">Last 24h users</h1>
             <div class="overflow-x-scroll">
               <table class="w-full whitespace-nowrap">
@@ -278,7 +289,7 @@ const Dashboard = () => {
                 <Users />
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
